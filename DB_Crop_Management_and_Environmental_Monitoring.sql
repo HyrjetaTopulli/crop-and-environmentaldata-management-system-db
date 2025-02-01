@@ -1,5 +1,3 @@
---ASSIGNMENT
-
 --Creating and Inseting values to the tables
 
 --Table 1: Users
@@ -300,10 +298,7 @@ VALUES (7, 7, DATE '2024-12-16', 75, 7.1, 24, 6, 5)
 SELECT * FROM dual;
 
 
---SELECT STATEMENTS
-
-
---Basic SELECT statements to fetch data.
+--SELECT statement queries to fetch data
 
 SELECT * FROM Users;
 
@@ -327,7 +322,7 @@ FROM EnvironmentalData
 WHERE SoilMoisture > 60 AND Temperature < 25;
 
 
---Sorting results using ORDER BY.
+--Sorting results using ORDER BY
 
 SELECT * FROM Users ORDER BY RegistrationDate DESC;
 
@@ -353,7 +348,7 @@ FROM PestDiseaseData
 GROUP BY PestDiseaseType;
 
 
---Transaction Control
+--Transaction Control (Commit & Rollback)
 
 INSERT INTO Users (UserID, UserType, UserName, ContactEmail, RegistrationDate)
 VALUES (22, 'Farmer', 'Sara Abazi', 'sara.abazi@gmail.com', DATE '2024-06-25');
@@ -364,64 +359,78 @@ VALUES (3, 'Farmer', 'Not a user', 'not_an_email', TO_DATE('15-JAN-2025', 'DD-MO
 ROLLBACK;
 
 
---Functions
+--Functions to perfom calculations, transformations, and aggregations on data
 
+--UPPER to capitalize the users' names
 SELECT UserID, UPPER(UserName) AS CapitalizedName FROM Users;
 
+
+--UPPER to capitalize the users' names
 SELECT UserID, 
        ContactEmail, 
        SUBSTR(ContactEmail, INSTR(ContactEmail, '@') + 1) AS EmailDomain 
 FROM Users;
 
+--UPPER to capitalize the users' names
 SELECT CropID, 
        LENGTH(CropName) AS CropNameLength, 
        CONCAT(CropName, ' - ' || Variety) AS CropDetails 
 FROM Crops;
 
+--UPPER to capitalize the users' names
 SELECT UserID, 
        RegistrationDate, 
        ROUND(CURRENT_DATE - RegistrationDate) AS DaysSinceRegistration 
 FROM Users;
 
+--UPPER to capitalize the users' names
 SELECT CropID, 
        CropName, 
        NEXT_DAY(CURRENT_DATE, 'Sunday') AS NextHarvestDay 
 FROM Crops 
 WHERE HarvestDate > CURRENT_DATE;
 
+--UPPER to capitalize the users' names
 SELECT FieldID, 
        SUM(Quantity) AS TotalYield 
 FROM YieldData 
 GROUP BY FieldID;
 
+--UPPER to capitalize the users' names
 SELECT FieldID, 
        MAX(Temperature) AS MaxTemperature, 
        MIN(Temperature) AS MinTemperature 
 FROM WeatherData 
 GROUP BY FieldID;
 
+--UPPER to capitalize the users' names
 SELECT IncidentID, FieldID, PestDiseaseType, Severity 
 FROM PestDiseaseData 
 WHERE REGEXP_LIKE(Severity, '^severe$', 'i');
 
+--UPPER to capitalize the users' names
 SELECT FieldID, 
        REPLACE(SoilType, 'loam', 'rich loam') AS UpdatedSoilType 
 FROM Fields;
 
+--UPPER to capitalize the users' names
 SELECT FieldID, 
        MOD(FieldID, 2) AS OddOrEven 
 FROM Fields;
 
+--UPPER to capitalize the users' names
 SELECT CropID, 
        POWER(Quantity, 2) AS QuantitySquared 
 FROM YieldData;
 
+--UPPER to capitalize the users' names
 SELECT UserID, 
        INITCAP(UserName) AS FormattedName, 
        TO_CHAR(RegistrationDate, 'DD-MON-YYYY') AS RegistrationDate 
 FROM Users;
 
---session variable
+
+--Session variable to prompt the user for input
 
 ACCEPT CropIDValue CHAR PROMPT 'Enter the CropID: ';
 
@@ -439,7 +448,7 @@ FROM EnvironmentalData
 WHERE CropID = &CropIDValue;
 
 
---sequences
+--Sequences
 
 CREATE SEQUENCE UserID_Sequence
 START WITH 1
@@ -459,7 +468,7 @@ ORDER;
 SELECT * FROM user_sequences;
 
 
---indexes
+--Indexes
 
 CREATE INDEX WeatherFieldID_index 
 ON WeatherData (FieldID);
@@ -476,7 +485,8 @@ SELECT INDEX_NAME, TABLE_NAME, COLUMN_NAME
 FROM USER_IND_COLUMNS
 WHERE INDEX_NAME = 'PESTSEVERITY_IDX';
 
---synonym
+
+--Synonym
 
 CREATE SYNONYM Users_Synonym
 FOR Users;
@@ -485,7 +495,8 @@ SELECT * FROM Users_Synonym
 WHERE UserType = 'Farmer';
 
 
---VIEWS
+--Views to create summaries and make retrieval easier
+--JOINs to combine tables for meaningful insights
 
 CREATE OR REPLACE VIEW FieldWeatherView AS
 SELECT 
@@ -499,8 +510,8 @@ SELECT
 FROM Fields f
 JOIN WeatherData w ON f.FieldID = w.FieldID;
 
-
 SELECT * FROM FieldWeatherView;
+
 
 
 CREATE VIEW FieldWeatherSummary AS
@@ -522,7 +533,6 @@ ORDER BY f.FieldSize DESC, AvgTemperature DESC;
 SELECT * FROM FieldWeatherSummary;
 
 
---JOINS
 
 SELECT f.FieldLocation, w.Temperature, w.Humidity, w.Rainfall
 FROM WeatherData w
@@ -537,6 +547,7 @@ SELECT
   w.Rainfall
 FROM Fields f
 LEFT JOIN WeatherData w ON f.FieldID = w.FieldID;
+
 
 
 --subqueries
@@ -560,7 +571,8 @@ SELECT
 FROM Users;
 
 
---PL/SQL Block
+
+--PL/SQL Blocks to enable procedural logic; dynamically update & insert new users
 
 SET SERVEROUTPUT ON; 
 --to print statement of temperature
@@ -592,7 +604,7 @@ COMMIT;
 END;
 
 
---bonus
+--Bonus
 
 SELECT c.CropName, SUM(yd.Quantity) AS TotalYield
 FROM Crops c
